@@ -7,6 +7,6 @@ int main(){
     cin >> n >> m;
     cout << fixed;
     cout.precision(1);
-    cout << n * m / 2 << endl;
+    cout << static_cast<double>(n * m / 2) << endl;
     return 0;
 }
