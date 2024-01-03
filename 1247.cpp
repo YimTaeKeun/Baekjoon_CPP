@@ -12,6 +12,7 @@ int main(){
             sum += temp;
             if(temp > 0 && prev > 0 && sum < 0) flow++;
             else if(temp < 0 && prev < 0 && sum > 0) flow--;
+            cout << sum << endl;
         }
         if(flow == 0){
             if(sum == 0) cout << 0;
