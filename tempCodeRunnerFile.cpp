@@ -1,2 +1,2 @@
-][two] = true;
-        board[two][o
+ % 1000000);
+            }
