@@ -1,9 +1,7 @@
-// hello \
-(macro)\
-주석 연습 
-#include <iostream>
-int main(){
-    int main = 0;
-    std::cin >> main;
-    std::cout << main;
-}
+recursion(n, 0, 0);
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n; j++){
+            cout << (cal[i][j]) ? '*' : ' ';
+        }
+        cout << endl;
+    }
