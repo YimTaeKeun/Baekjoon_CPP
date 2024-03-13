@@ -1,61 +1,50 @@
 #include <iostream>
-#include <vector>
 using namespace std;
 int find(int);
-void unionHuman(int, int);
-int* board;
-vector<vector<int>*> events;
+void union_arr(int, int);
+int* cal;
+int** commands;
 int main(){
-    int n = 0, eventCnt = 0;
-    cin >> n >> eventCnt;
-    board = new int[n + 1];
-    for(int i = 0; i <= n; i++) board[i] = i;
-    int truthCnt = 0;
-    cin >> truthCnt;
-    int temp = 0;
-    for(int i = 0; i < truthCnt; i++){
-        temp = 0;
-        cin >> temp;
-        unionHuman(0, temp);
+    // union-find
+    int peopleCnt = 0, commandCnt = 0, know = 0;
+    cin >> peopleCnt >> commandCnt;
+    cal = new int[peopleCnt + 1];
+    commands = new int*[commandCnt];
+    for(int i = 0; i <= peopleCnt; i++) cal[i] = i;
+    cin >> know;
+    for(int i = 0; i < know; i++){
+        int a = 0;
+        cin >> a;
+        cal[a] = 0;
+    }
+    for(int i = 0; i < commandCnt; i++){
+        int cnt = 0;
+        cin >> cnt;
+        commands[i] = new int[cnt + 1];
+        commands[i][0] = cnt;
+        for(int j = 1; j <= cnt; j++) cin >> commands[i][j];
+        for(int j = 1; j <= cnt - 1; j++) union_arr(commands[i][j], commands[i][j + 1]);
     }
     int result = 0;
-    for(int e = 0; e < eventCnt; e++){
-        cin >> temp;
-        bool truth = false;
-        events.push_back(new vector<int>);
-        for(int i = 0; i < temp; i++){
-            int targetHuman = 0;
-            cin >> targetHuman;
-            (*events[e]).push_back(targetHuman);
-            if(find(targetHuman) == 0 || truth){
-                truth = true;
-                unionHuman(0, targetHuman);
-            }
-        }
-        if(truth){
-            for(int i = 0; i < (*events[e]).size() - 1; i++) unionHuman((*events[e])[i], (*events[e])[i + 1]);
-        }
-    }
-    for(int i = 0; i < eventCnt; i++){
-        bool isContinue = false;
-        vector<int> event = *events[i];
-        for(int j = 0; j < event.size(); j++){
-            if(find(event[j]) == 0){
-                isContinue = true;
+    for(int c = 0; c < commandCnt; c++){
+        for(int r = 1; r <= commands[c][0]; r++){
+            if(find(commands[c][r]) == 0){
+                result++;
                 break;
             }
         }
-        if(!isContinue){ result++; cout << i << "event" <<endl;}
     }
-    cout << result;
+    cout << commandCnt - result;
     return 0;
 }
 int find(int x){
-    if(board[x] != x) return find(board[x]);
+    if(cal[x] != x) return find(cal[x]);
     return x;
 }
-void unionHuman(int x, int y){
+void union_arr(int x, int y){
     x = find(x);
     y = find(y);
-    if(x != y) board[y] = x;
+    if(x == 0) cal[y] = 0;
+    else if(y == 0) cal[x] = 0;
+    else if(x != y) cal[y] = x;
 }
