@@ -1,1 +1,2 @@
-// fill_n(picture, 5, new char[7]);
+
+        }
