@@ -1,2 +1,1 @@
-
-        }
+; c2 < people_cnt; 
