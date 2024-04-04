@@ -1,71 +1,55 @@
 #include <iostream>
 #include <vector>
-#include <queue>
+#include <algorithm>
 using namespace std;
-void bfs(int mother);
-bool** board;
+vector<int>* node_inform;
 bool* visit;
-int cntMax = 0;
-int n = 0;
-int cnt = 1;
+// 노드 깊이 변수
+int depth;
+void bfs(int);
 int main(){
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
-    vector<int> resultElems;
-    int lineCnt = 0;
-    cin >> n >> lineCnt;
-    board = new bool*[n + 1];
-    visit = new bool[n + 1];
-    bool* isParent = new bool[n + 1];
-    fill_n(isParent, n + 1, true);
-    for(int i = 0; i <= n; i++){
-         board[i] = new bool[n + 1];
-         fill_n(board[i], n + 1, false);
+    int node_cnt = 0, line_cnt = 0;
+    cin >> node_cnt >> line_cnt;
+    // 리프노드가 될 수 있는 가능성을 탐색하는 배열
+    bool* is_parent = new bool[node_cnt + 1];
+    node_inform = new vector<int>[node_cnt + 1];
+    visit = new bool[node_cnt + 1];
+    fill_n(is_parent, node_cnt + 1, true);
+    fill_n(visit, node_cnt + 1, false);
+    for(int i = 0; i < line_cnt; i++){
+        int child = 0, parent = 0;
+        cin >> child >> parent;
+        // 부모 가능성 없으면 부모 가능성에서 제거
+        is_parent[child] = false;
+        node_inform[parent].push_back(child);
     }
-    for(int i = 0; i < lineCnt; i++){
-        int mother = 0, child = 0;
-        cin >> child >> mother;
-        isParent[child] = false;
-        board[mother][child] = true;
-    }
-    for(int i = 1; i <= n; i++){
-        cnt = 1;
-        if(isParent[i]){
-            fill_n(visit, n + 1, false);
+    // ㄴ 노드 연결 완료
+    // 탐색 시작
+    vector<int> result_vector;
+    int max_depth = 0;
+    for(int i = 1; i <= node_cnt; i++){
+        depth = 0;
+        if(is_parent[i]){
             visit[i] = true;
             bfs(i);
+            visit[i] = false;
+            if(max_depth < depth){
+            max_depth = depth;
+            result_vector.clear();
+            result_vector.push_back(i);
+            }
+            else if(max_depth == depth) result_vector.push_back(i);
         }
-        if(cnt > cntMax){
-            cntMax = cnt;
-            resultElems.clear();
-            resultElems.push_back(i);
-        }
-        else if(cnt == cntMax) resultElems.push_back(i);
+        
     }
-    for(int i = 0; i < resultElems.size(); i++){
-        cout << resultElems[i] << " ";
-    }
+    for(int i = 0; i < result_vector.size(); i++) cout << result_vector[i] << " ";
     return 0;
 }
-void bfs(int mother){
-    queue<int> children;
-    for(int i = 1; i <= n; i++){
-        if(board[mother][i] && !visit[i]){
-            visit[i] = true;
-            children.push(i);
-        }
-    }
-    int size = children.size();
-    for(int i = 0; i < size; i++){
-        cnt++;
-        int data = children.front();
-        children.pop();
-    }
-    while(!children.empty()){
-        cnt++;
-        int data = children.front();
-        children.pop();
-        bfs(data);
+void bfs(int now_node){
+    depth++;
+    for(int i = 0; i < node_inform[now_node].size(); i++){
+        visit[node_inform[now_node][i]] = true;
+        bfs(node_inform[now_node][i]);
+        visit[node_inform[now_node][i]] = false;
     }
 }
