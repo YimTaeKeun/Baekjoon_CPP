@@ -14,11 +14,15 @@ int main(){
         }
         else score += temp;
     }
-    if(100 - score < afterScore - 100){
+    if(!is_success) cout << score << endl;
+    else{
+        if(100 - score < afterScore - 100){
         cout << score << endl;
+        }
+        else if(100 - score >= afterScore - 100){
+            cout << afterScore << endl;
+        }
     }
-    else if(100 - score >= afterScore - 100){
-        cout << afterScore << endl;
-    }
+    
     return 0;
 }
