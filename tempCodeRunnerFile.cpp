@@ -1,1 +1,1 @@
-a
+cin.ignore();
