@@ -1,34 +1,33 @@
 #include <iostream>
 using namespace std;
 int main(){
-    int people_cnt = 0;
-    cin >> people_cnt;
-    int** people = new int*[people_cnt];
-    int* count = new int[people_cnt];
-    fill_n(count, people_cnt, 0);
-    for(int i = 0; i < people_cnt; i++){
-        people[i] = new int[5];
-        for(int j = 0; j < 5; j++) cin >> people[i][j];  
+    int n = 0;
+    cin >> n;
+    int** info = new int*[n];
+    bool* visit = new bool[n];
+    int* cnt = new int[n];
+    fill_n(cnt, n, 0);
+    for(int i = 0; i < n; i++){
+        info[i] = new int[5];
+        for(int j = 0; j < 5; j++) cin >> info[i][j];
     }
-    for(int r = 0; r < 5; r++){
-        for(int c = 0; c < people_cnt; c++){
-            for(int c2 = 0; c2 < people_cnt; c2++){
-                if(c != c2 && people[c][r] == people[c2][r]){
-                    count[c]++;
-                    break;
+    for(int i = 0; i < n; i++){
+        fill_n(visit, n, false);
+        int data = 0;
+        for(int j = 0; j < 5; j++){
+            data = info[i][j];
+            for(int k = 0; k < n; k++){
+                if(i != k && data == info[k][j] && !visit[k]){
+                    visit[k] = true;
+                    cnt[i]++;
                 }
             }
         }
     }
-    long long max_num = 0;
-    for(int i = 0; i < people_cnt; i++){
-        if(max_num < count[i]) max_num = count[i];
+    int highIdx = 0;
+    for(int i = 0; i < n; i++){
+        if(cnt[highIdx] < cnt[i]) highIdx = i;
     }
-    for(int i = 0; i < people_cnt; i++){
-        if(max_num == count[i]){
-            cout << i + 1;
-            break;
-        }
-    }
+    cout << highIdx + 1 << endl;
     return 0;
 }
